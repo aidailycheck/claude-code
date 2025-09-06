@@ -1,6 +1,8 @@
 # AI Daily Check - Claude Code Integration
 
-Vote and Check Claude Code performance directly from Claude Code with the `/vote` command. Data from [AI Daily Check](https://aidailycheck.com) 
+Vote and Check Claude Code performance directly from Claude Code with the `/vote` command. Data from [AI Daily Check](https://aidailycheck.com)
+
+![Demo](demo.gif) 
 
 ## Install
 
