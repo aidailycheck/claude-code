@@ -1,10 +1,8 @@
 # AI Daily Check - Claude Code Integration
 
-Vote and Check Claude Code performance directly from Claude Code with the `/vote` slash command!
+Vote and Check Claude Code performance directly from Claude Code with the `/vote` command. Data from [AI Daily Check](https://aidailycheck.com) 
 
-## 🚀 Quick Start
-
-Choose your preferred installation method:
+## Install
 
 ### Option 1: Automatic Setup (Recommended)
 
@@ -43,9 +41,8 @@ curl -sSL https://raw.githubusercontent.com/aidailycheck/claude-code/main/instal
 ```bash
 # See live performance stats
 /vote stats       # Show current AI performance for all models
-/vote stats claude # Show performance for specific AI model
+/vote stats claude|chatgpt|gemini # Show performance for specific AI model
 ```
-
 
 ## 🛠 How It Works
 
