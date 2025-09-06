@@ -33,8 +33,7 @@ curl -sSL https://raw.githubusercontent.com/aidailycheck/claude-code/main/instal
 ```bash
 # Add context about what happened
 /vote genius "Perfect React component with proper error handling"
-/vote terrible "Generated Python code with multiple syntax errors"
-/vote smart "Good solution but missed an edge case in validation"
+/vote terrible Generated Python code with multiple syntax errors # this works even without double quotes
 ```
 
 ### View Current Performance
