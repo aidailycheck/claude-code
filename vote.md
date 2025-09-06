@@ -1,6 +1,6 @@
 ---
 allowed-tools: WebFetch
-argument-hint: [sentiment|stats] [optional: context or AI model]
+argument-hint: [sentiment|stats] [optional: why (if sentiment) or AI model (if stats)]
 description: Vote on AI performance or view current stats for AI Daily Check
 ---
 
