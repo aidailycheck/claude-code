@@ -1,4 +1,5 @@
 ---
+version: 1.0
 allowed-tools: WebFetch
 argument-hint: [sentiment|stats] [optional: why (if sentiment) or AI model (if stats)]
 description: Vote on AI performance or view current stats for AI Daily Check
@@ -29,7 +30,7 @@ Make a POST request to https://aidailycheck-vote.eric-test.workers.dev/vote_clau
 - sentiment: $1 (terrible, dumb, mid, smart, genius)  
 - llm: auto-detected from conversation context
 - message: $2 (optional context about what happened)
-- source: "claude_code"
+- client_version: "1.0" (from this command's frontmatter version)
 
 Show confirmation of the vote submission with a brief summary.
 
