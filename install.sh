@@ -80,12 +80,56 @@ if [[ "$install_status" =~ ^[Yy]$ ]]; then
         chmod +x "$STATUS_SCRIPT_PATH"
         echo -e "${GREEN}✅ Status bar script installed${NC}"
         
-        # Check if settings.json exists and has statusLine config
+        # Check if settings.json exists and configure statusLine
         SETTINGS_FILE="$HOME/.claude/settings.json"
         if [ -f "$SETTINGS_FILE" ]; then
-            echo -e "${YELLOW}⚠️  You already have a status line configured.${NC}"
-            echo "To use AI Daily Check status bar, update your ~/.claude/settings.json:"
-            echo '  "statusLine": {"type": "command", "command": "bash ~/.claude/ai-daily-status.sh"}'
+            # Check if statusLine already exists
+            if grep -q '"statusLine"' "$SETTINGS_FILE"; then
+                echo -e "${YELLOW}⚠️  You already have a status line configured.${NC}"
+                echo "To use AI Daily Check status bar, update your ~/.claude/settings.json:"
+                echo '  "statusLine": {"type": "command", "command": "bash ~/.claude/ai-daily-status.sh"}'
+            else
+                # Add statusLine to existing settings file
+                echo "Adding AI Daily Check status bar to existing settings..."
+                
+                # Try using jq first (more reliable JSON manipulation)
+                if command -v jq &> /dev/null; then
+                    TEMP_FILE=$(mktemp)
+                    jq '. + {"statusLine": {"type": "command", "command": "bash ~/.claude/ai-daily-status.sh"}}' "$SETTINGS_FILE" > "$TEMP_FILE" && mv "$TEMP_FILE" "$SETTINGS_FILE" && echo -e "${GREEN}✅ Status bar added to existing settings${NC}" || {
+                        echo -e "${YELLOW}⚠️  Could not update settings.json with jq${NC}"
+                        echo "Please manually add the following to your ~/.claude/settings.json:"
+                        echo '  "statusLine": {"type": "command", "command": "bash ~/.claude/ai-daily-status.sh"}'
+                    }
+                # Fallback to Python if jq is not available
+                elif command -v python3 &> /dev/null; then
+                    python3 -c "
+import json
+import sys
+
+try:
+    with open('$SETTINGS_FILE', 'r') as f:
+        settings = json.load(f)
+except (json.JSONDecodeError, FileNotFoundError):
+    settings = {}
+
+settings['statusLine'] = {
+    'type': 'command',
+    'command': 'bash ~/.claude/ai-daily-status.sh'
+}
+
+with open('$SETTINGS_FILE', 'w') as f:
+    json.dump(settings, f, indent=2)
+" 2>/dev/null && echo -e "${GREEN}✅ Status bar added to existing settings${NC}" || {
+                        echo -e "${YELLOW}⚠️  Could not automatically update settings.json${NC}"
+                        echo "Please manually add the following to your ~/.claude/settings.json:"
+                        echo '  "statusLine": {"type": "command", "command": "bash ~/.claude/ai-daily-status.sh"}'
+                    }
+                else
+                    echo -e "${YELLOW}⚠️  Neither jq nor python3 found. Cannot automatically update settings.json${NC}"
+                    echo "Please manually add the following to your ~/.claude/settings.json:"
+                    echo '  "statusLine": {"type": "command", "command": "bash ~/.claude/ai-daily-status.sh"}'
+                fi
+            fi
         else
             echo "Creating settings.json with AI Daily Check status bar..."
             cat > "$SETTINGS_FILE" << 'EOF'
