@@ -52,7 +52,7 @@ fi
 echo ""
 echo -e "${YELLOW}Optional: Install AI Daily Check status bar?${NC}"
 echo "This adds AI performance stats to your Claude Code status bar."
-read -p "Install status bar? (y/N): " install_status
+read -p "Install status bar? (y/N): " install_status < /dev/tty
 
 if [[ "$install_status" =~ ^[Yy]$ ]]; then
     STATUS_SCRIPT_URL="https://raw.githubusercontent.com/aidailycheck/claude-code/main/ai-daily-status.sh"
