@@ -52,7 +52,24 @@ fi
 echo ""
 echo -e "${YELLOW}Optional: Install AI Daily Check status bar?${NC}"
 echo "This adds AI performance stats to your Claude Code status bar."
-read -p "Install status bar? (y/N): " install_status < /dev/tty
+
+# Check if we can read from terminal
+if [ -t 0 ]; then
+    # stdin is a terminal, can read directly
+    read -p "Install status bar? (y/N): " install_status
+else
+    # stdin is not a terminal (piped execution), try to read from tty
+    if [ -r /dev/tty ]; then
+        read -p "Install status bar? (y/N): " install_status < /dev/tty
+    else
+        echo "Unable to read user input in this environment."
+        echo "Skipping status bar installation. You can install it manually later:"
+        echo "  curl -sSL https://raw.githubusercontent.com/aidailycheck/claude-code/main/ai-daily-status.sh -o ~/.claude/ai-daily-status.sh"
+        echo "  chmod +x ~/.claude/ai-daily-status.sh"
+        echo '  # Add to ~/.claude/settings.json: "statusLine": {"type": "command", "command": "bash ~/.claude/ai-daily-status.sh"}'
+        install_status="N"
+    fi
+fi
 
 if [[ "$install_status" =~ ^[Yy]$ ]]; then
     STATUS_SCRIPT_URL="https://raw.githubusercontent.com/aidailycheck/claude-code/main/ai-daily-status.sh"
