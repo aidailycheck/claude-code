@@ -16,7 +16,7 @@ If $1 is "stats", fetch current AI performance data and display it in a formatte
 If $2 is provided (claude/chatgpt/gemini), show stats for that specific AI.
 Otherwise show stats for all AI models.
 
-Make a GET request to https://aidailycheck-vote.eric-test.workers.dev/totals
+Make a GET request to https://api.aidailycheck.com/totals
 Parse the response and display current performance metrics in a readable format.
 
 ## If this is a vote:
@@ -26,7 +26,7 @@ Optional context: "$2"
 
 Auto-detect which AI model we're currently using (Claude, ChatGPT, Gemini, etc.) from conversation context.
 
-Make a POST request to https://aidailycheck-vote.eric-test.workers.dev/vote_claude_code with:
+Make a POST request to https://api.aidailycheck.com/vote_claude_code with:
 - sentiment: $1 (terrible, dumb, mid, smart, genius)  
 - llm: auto-detected from conversation context
 - message: $2 (optional context about what happened)

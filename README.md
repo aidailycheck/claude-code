@@ -8,16 +8,34 @@ Vote and Check Claude Code performance directly from Claude Code with the `/vote
 
 ### Option 1: Automatic Setup (Recommended)
 
-This will Download and run the installer: 
+Download and run the installer (includes optional status bar):
 ```bash
 curl -sSL https://raw.githubusercontent.com/aidailycheck/claude-code/main/install.sh | bash
 ```
+
+The installer will:
+- Install the `/vote` command
+- Optionally install AI Daily Check status bar
+- Handle existing configurations safely
 
 ### Option 2: Manual Installation
 1. Download the `https://raw.githubusercontent.com/aidailycheck/claude-code/main/vote.md` file from this repository
 2. Create the directory if it doesn't exist: `mkdir -p ~/.claude/commands`
 3. Copy it to your Claude Code commands directory:  `~/.claude/commands/vote.md`
 4. Restart Claude Code if it's running
+
+#### Optional: Manual Status Bar Setup
+1. Download: `curl -sSL https://raw.githubusercontent.com/aidailycheck/claude-code/main/ai-daily-status.sh -o ~/.claude/ai-daily-status.sh`
+2. Make executable: `chmod +x ~/.claude/ai-daily-status.sh`
+3. Update `~/.claude/settings.json`:
+```json
+{
+  "statusLine": {
+    "type": "command", 
+    "command": "bash ~/.claude/ai-daily-status.sh"
+  }
+}
+```
 
 ## 📖 Usage
 
@@ -47,10 +65,17 @@ curl -sSL https://raw.githubusercontent.com/aidailycheck/claude-code/main/instal
 
 ## 🛠 How It Works
 
+### Voting Commands
 1. You type `/vote [sentiment] [why]` or `/vote stats`
 2. Claude detects the AI model from conversation history  
 3. Vote gets submitted to AI Daily Check community database
 4. Your contribution helps others track AI performance trends
+
+### Status Bar (Optional)
+- Shows live AI performance stats in your Claude Code status bar
+- Updates every 5 minutes, displays for first 5 seconds of each session
+- Format: `AI Daily Check 🤯 25% 🧠 30% 😐 20% 🤔 15% 🤦 10%`
+- Falls back to "AI Daily: offline 🔌" when API unavailable
 
 ## 📊 What This Helps With
 

@@ -50,6 +50,43 @@ else
 fi
 
 echo ""
+echo -e "${YELLOW}Optional: Install AI Daily Check status bar?${NC}"
+echo "This adds AI performance stats to your Claude Code status bar."
+read -p "Install status bar? (y/N): " install_status
+
+if [[ "$install_status" =~ ^[Yy]$ ]]; then
+    STATUS_SCRIPT_URL="https://raw.githubusercontent.com/aidailycheck/claude-code/main/ai-daily-status.sh"
+    STATUS_SCRIPT_PATH="$HOME/.claude/ai-daily-status.sh"
+    
+    echo "Downloading status bar script..."
+    if curl -sSL "$STATUS_SCRIPT_URL" -o "$STATUS_SCRIPT_PATH"; then
+        chmod +x "$STATUS_SCRIPT_PATH"
+        echo -e "${GREEN}✅ Status bar script installed${NC}"
+        
+        # Check if settings.json exists and has statusLine config
+        SETTINGS_FILE="$HOME/.claude/settings.json"
+        if [ -f "$SETTINGS_FILE" ]; then
+            echo -e "${YELLOW}⚠️  You already have a status line configured.${NC}"
+            echo "To use AI Daily Check status bar, update your ~/.claude/settings.json:"
+            echo '  "statusLine": {"type": "command", "command": "bash ~/.claude/ai-daily-status.sh"}'
+        else
+            echo "Creating settings.json with AI Daily Check status bar..."
+            cat > "$SETTINGS_FILE" << 'EOF'
+{
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/ai-daily-status.sh"
+  }
+}
+EOF
+            echo -e "${GREEN}✅ Status bar configured${NC}"
+        fi
+    else
+        echo -e "${RED}❌ Failed to download status bar script${NC}"
+    fi
+fi
+
+echo ""
 echo -e "${GREEN}🎉 Installation complete!${NC}"
 echo ""
 echo "Next steps:"
