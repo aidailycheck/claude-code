@@ -37,7 +37,7 @@ if [ "$show_stats" != "true" ]; then
 fi
 
 # Fetch Claude stats
-API_URL="https://api.aidailycheck.com/totals"
+API_URL="https://api.aidailycheck.com/totals?period=24h&llm=claude"
 response=$(curl -s --connect-timeout 3 --max-time 5 "$API_URL" 2>/dev/null)
 
 # Simple error checking
